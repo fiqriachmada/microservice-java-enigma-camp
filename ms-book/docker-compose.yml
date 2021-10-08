@@ -1,0 +1,28 @@
+version: '3'
+services:
+  # Backend Service
+  app-services:
+    image: 'ms-book-service'
+    container_name: ms-book-service
+    ports:
+      - 8081:8091
+    depends_on:
+      - mysqldb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb/book_micro
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=default
+      - SPRING_DATASOURCE_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - backend
+  # MySQL Service
+  mysqldb:
+    image: mysql
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=default
+      - MYSQL_DATABASE=book_micro
+    networks:
+      - backend
+networks:
+  backend:
